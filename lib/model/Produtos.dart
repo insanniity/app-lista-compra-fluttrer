@@ -2,11 +2,11 @@
 class Produtos {
 
   int? id;
-  String? nome;
-  String? fornecedor;
-  double? preco;
+  late String nome;
+  late String fornecedor;
+  late double preco;
 
-  Produtos(this.id, this.nome, this.fornecedor, this.preco);
+  Produtos({this.id, required this.nome,required this.fornecedor,required this.preco});
 
   Map<String, dynamic> toMap(){
     return {
@@ -23,6 +23,7 @@ class Produtos {
     fornecedor = map['fornecedor'];
     preco = map['preco'];
   }
+
 
 
 }

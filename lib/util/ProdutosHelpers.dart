@@ -45,7 +45,6 @@ class ProdutosHelpers {
     return _database!;
   }
 
-
   listarProdutos () async {
     Database db = await database;
     String sql = 'SELECT * FROM $nomeTabela';
@@ -53,10 +52,21 @@ class ProdutosHelpers {
     return lista;
   }
 
-
   Future<int> addProduto (Produtos obj) async {
     Database db = await database;
     var res = await db.insert(nomeTabela, obj.toMap());
+    return res;
+  }
+
+  Future<int> deleteProduto(int? id) async {
+    Database db = await database;
+    var res = await db.delete(nomeTabela, where: 'id = ?', whereArgs: [id]);
+    return res;
+  }
+
+  Future<int> alterarProduto(Produtos obj) async {
+    Database db = await database;
+    var res = await db.update(nomeTabela, obj.toMap(), where: 'id = ?', whereArgs: [obj.id]);
     return res;
   }
 

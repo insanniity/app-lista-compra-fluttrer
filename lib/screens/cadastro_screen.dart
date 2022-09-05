@@ -1,3 +1,4 @@
+import 'package:app_lista_compra_fluttrer/screens/produtos_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:app_lista_compra_fluttrer/screens/widgets/menu_drawer.dart';
 import 'package:app_lista_compra_fluttrer/util/ProdutosHelpers.dart';
@@ -6,26 +7,58 @@ import 'package:app_lista_compra_fluttrer/util/ProdutosHelpers.dart';
 import '../model/Produtos.dart';
 
 
-class Cadastro extends StatefulWidget {
-  const Cadastro({Key? key}) : super(key: key);
+class TelaCadastro extends StatefulWidget {
+  Produtos? produto;
+
+  TelaCadastro({Key? key, this.produto}) : super(key: key);
 
   @override
-  State<Cadastro> createState() => _CadastroState();
+  State<TelaCadastro> createState() => _TelaCadastroState();
 }
 
-class _CadastroState extends State<Cadastro> {
+class _TelaCadastroState extends State<TelaCadastro> {
 
   TextEditingController txtNome = TextEditingController();
   TextEditingController txtFornecedor = TextEditingController();
   TextEditingController txtPreco = TextEditingController();
 
+  String txtBotao = 'Adicionar produto';
+  String txtAppBar = 'Cadastrar produto';
+
+  int? idProduto;
+
   ProdutosHelpers db = ProdutosHelpers();
 
-  void salvarProduto() async {
-    Produtos obj = Produtos(null, txtNome.text, txtFornecedor.text, double.parse(txtPreco.text));
-    int res = await db.addProduto(obj);
-    if(res != null){
-      print("Cadastrado com sucesso: $res");
+  void salvarProduto({Produtos? p}) async {
+    final navigator = Navigator.of(context);
+    setState(() async {
+      int? res;
+      if(p == null){
+        Produtos obj = Produtos(id: null, nome: txtNome.text, fornecedor: txtFornecedor.text, preco: double.parse(txtPreco.text));
+        res = await db.addProduto(obj);
+      }else{
+        p.nome = txtNome.text;
+        p.fornecedor = txtFornecedor.text;
+        p.preco = double.parse(txtPreco.text);
+        p.id = idProduto;
+        res = await db.alterarProduto(p);
+      }
+      navigator.pop();
+      navigator.push(MaterialPageRoute(builder: (context) => const TelaProdutos()));
+    });
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.produto != null){
+      idProduto = widget.produto!.id;
+      txtNome.text = widget.produto!.nome;
+      txtFornecedor.text = widget.produto!.fornecedor;
+      txtPreco.text = widget.produto!.preco.toString();
+      txtBotao = 'Editar produto';
+      txtAppBar = 'Editar produto';
     }
   }
 
@@ -33,7 +66,7 @@ class _CadastroState extends State<Cadastro> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Cadastro de produto"),
+        title: Text(txtAppBar),
         centerTitle: true,
         backgroundColor: Colors.blueGrey,
       ),
@@ -74,12 +107,14 @@ class _CadastroState extends State<Cadastro> {
                       height: 60,
                       width: double.infinity,
                       child: ElevatedButton(
-                          onPressed: salvarProduto,
+                          onPressed: (){
+                            salvarProduto(p: widget.produto);
+                          },
                           style: ElevatedButton.styleFrom(
                             primary: Colors.blueGrey,
                             onPrimary: Colors.white,
                           ),
-                          child:const Text("Adicionar produto", style: TextStyle(fontSize: 16),),
+                          child:Text(txtBotao, style:const TextStyle(fontSize: 16),),
                       ),
                     ),
                   ],

@@ -1,4 +1,4 @@
-import 'package:app_lista_compra_fluttrer/screens/home.dart';
+import 'package:app_lista_compra_fluttrer/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {

@@ -1,6 +1,8 @@
-import 'package:app_lista_compra_fluttrer/screens/cadastro.dart';
-import 'package:app_lista_compra_fluttrer/screens/home.dart';
+import 'package:app_lista_compra_fluttrer/screens/cadastro_screen.dart';
+import 'package:app_lista_compra_fluttrer/screens/produtos_screen.dart';
 import 'package:flutter/material.dart';
+
+import '../cadastro_screen.dart';
 
 
 Widget menuDrawer (BuildContext context) {
@@ -46,7 +48,7 @@ Widget menuDrawer (BuildContext context) {
           title: const Text("Meus Produtos", style:  TextStyle(fontSize: 16),),
           onTap: (){
             Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const Home()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const TelaProdutos()));
           },
         ),
         ListTile(
@@ -54,7 +56,7 @@ Widget menuDrawer (BuildContext context) {
           title: const Text("Novo Produto", style: TextStyle(fontSize: 16),),
           onTap: (){
             Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const Cadastro()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => TelaCadastro()));
           },
         ),
       ],
