@@ -6,7 +6,7 @@ class Produtos {
   String? fornecedor;
   double? preco;
 
-  Produtos({this.id, this.nome, this.fornecedor, this.preco});
+  Produtos(this.id, this.nome, this.fornecedor, this.preco);
 
   Map<String, dynamic> toMap(){
     return {
